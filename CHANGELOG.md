@@ -2,6 +2,11 @@
 
 Todas as mudanças relevantes na skill ficam registradas aqui, mais recente primeiro.
 
+## 2026-09-14 (2)
+
+- Removido o link fixo da pasta do Drive de dentro de `SKILL.md` — cada gestor de tráfego tem sua própria carteira de clientes e sua própria pasta, então um link fixo não fazia sentido num repositório compartilhado publicamente.
+- A skill agora pergunta ao gestor, na primeira vez que precisar do histórico de um cliente, onde ficam os check-ins semanais e relatórios mensais já existentes dele, e salva a resposta em `config.local.md` (arquivo local, no `.gitignore`, nunca vai pro GitHub) pra não perguntar de novo nas próximas conversas na mesma máquina.
+
 ## 2026-09-14
 
 Primeira versão publicada, consolidando o aprendizado de um dia inteiro de uso real processando o lote semanal de check-ins/relatórios.
