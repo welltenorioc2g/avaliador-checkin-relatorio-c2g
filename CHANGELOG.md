@@ -2,6 +2,11 @@
 
 Todas as mudanças relevantes na skill ficam registradas aqui, mais recente primeiro.
 
+## 2026-09-14 (3)
+
+- Adicionado passo a passo pra gerar um token do Meta Ads do zero (Usuário do Sistema no Business Manager, com token que não expira em 60 dias) pra gestores que ainda não têm um configurado.
+- Adicionada instrução de onde salvar o token gerado (`Token do Meta Ads.pdf` na raiz da pasta configurada em `config.local.md`) pra skill conseguir achar e usar.
+
 ## 2026-09-14 (2)
 
 - Removido o link fixo da pasta do Drive de dentro de `SKILL.md` — cada gestor de tráfego tem sua própria carteira de clientes e sua própria pasta, então um link fixo não fazia sentido num repositório compartilhado publicamente.

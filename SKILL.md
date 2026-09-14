@@ -21,13 +21,29 @@ Consulte os arquivos de referência sempre que: o Well pedir para gerar um check
 
 ## Acesso à API do Meta Ads (Graph API) — dados extras além do PDF
 
-O gestor normalmente mantém um PDF chamado `Token do Meta Ads.pdf` na raiz da pasta configurada em `config.local.md` (ver "Onde ficam os arquivos dos clientes" abaixo), com um access token de longa duração do Meta Ads. Se não achar esse arquivo ou não souber onde ele está, pergunte ao gestor. Use o token quando o PDF de métricas que ele mandou não tiver informação suficiente pra escrever um bom check-in (ex.: precisa saber se uma campanha específica está ativa ou pausada agora, o texto exato de um anúncio, criativos disponíveis, estrutura de campanhas de uma conta) — nesses casos, consulte a Graph API diretamente em vez de pedir pro gestor mandar mais dado.
+O gestor normalmente mantém um PDF chamado `Token do Meta Ads.pdf` na raiz da pasta configurada em `config.local.md` (ver "Onde ficam os arquivos dos clientes" abaixo), com um access token de longa duração do Meta Ads. Se não achar esse arquivo ou não souber onde ele está, pergunte ao gestor — e, se ele disser que ainda não tem um token, guie-o pelo passo a passo abaixo. Use o token quando o PDF de métricas que ele mandou não tiver informação suficiente pra escrever um bom check-in (ex.: precisa saber se uma campanha específica está ativa ou pausada agora, o texto exato de um anúncio, criativos disponíveis, estrutura de campanhas de uma conta) — nesses casos, consulte a Graph API diretamente em vez de pedir pro gestor mandar mais dado.
+
+### Se o gestor ainda não tiver um token — como gerar um
+
+O ideal é um token de **Usuário do Sistema** (System User) do Business Manager, porque esse tipo não expira em 60 dias como um token de usuário pessoal — só é revogado manualmente. Passo a passo:
+
+1. **Crie um App no Meta for Developers** (se a agência ainda não tiver um): acesse [developers.facebook.com/apps](https://developers.facebook.com/apps), "Criar app" → tipo **Negócios** → dê um nome (ex.: "C2G Ads Access") → conclua a criação. No painel do app, adicione o produto **Marketing API**.
+2. **Crie (ou reaproveite) um Usuário do Sistema no Business Manager**: acesse [business.facebook.com/settings](https://business.facebook.com/settings) → **Usuários** → **Usuários do sistema** → "Adicionar" → nomeie (ex.: "Claude Code - Check-ins") e defina a função como **Admin**.
+3. **Atribua as contas de anúncio a esse usuário do sistema**: ainda na tela do usuário do sistema, clique em "Atribuir ativos" → aba **Contas de anúncios** → marque todas as contas de clientes que precisam ser consultadas (ou todas as contas da agência, se o gestor tiver acesso a todas) → conceda controle total.
+4. **Gere o token**: na mesma tela do usuário do sistema, clique em "Gerar novo token" → selecione o App criado no passo 1 → marque as permissões: `ads_read`, `ads_management`, `business_management`, `read_insights` → em **Expiração do token**, escolha **Nunca expira** (essa opção só existe pra usuário do sistema, não pra token de usuário pessoal) → gere.
+5. **Copie o token gerado imediatamente** — o Meta só mostra o valor uma vez; se perder, precisa gerar outro.
+
+### Onde colocar o token pra a skill ter acesso
+
+1. Cole o token (só o valor, nada mais) num arquivo chamado exatamente `Token do Meta Ads.pdf` (pode ser um PDF exportado de um Google Doc com só o token colado, ou qualquer PDF simples de texto).
+2. Salve esse arquivo na **raiz** da mesma pasta do Drive configurada em `config.local.md` (a mesma que tem `Checkin semanal/`, `Relatório mensal/`, etc.) — não dentro de uma subpasta.
+3. Trate esse arquivo como senha: não compartilhe o link dele fora da equipe, e se o token vazar ou for comprometido, revogue-o em Business Settings → Usuários do sistema → (o usuário) → "..." → Excluir token, e gere um novo.
 
 **Regra de segurança inegociável — o token nunca é persistido nem exibido:**
 - **Nunca** escreva o token num arquivo em disco (nem temporário, nem no scratchpad) — isso é bloqueado pelo classificador de segurança do Claude Code ("Credential Materialization") e, mesmo que não fosse, é uma prática ruim.
 - **Nunca** imprima o valor do token na resposta pro usuário, em bloco de código, ou em qualquer texto que fique visível no chat.
 - Cada vez que precisar usar o token: leia o PDF `Token do Meta Ads.pdf` com a ferramenta de leitura de arquivo, e use o valor **na mesma chamada de Bash**, inline (`TOKEN='...' && curl ...`), sem nunca gravar em arquivo. Não reutilize entre chamadas salvando em variável de ambiente persistente — leia e use, sempre no mesmo golpe.
-- Se uma tentativa de persistir o token em arquivo for bloqueada pelo classificador de auto mode, **não tente contornar** — use a abordagem inline, ou pare e avise o Well.
+- Se uma tentativa de persistir o token em arquivo for bloqueada pelo classificador de auto mode, **não tente contornar** — use a abordagem inline, ou pare e avise o gestor.
 
 **Como consultar:**
 - Endpoint base: `https://graph.facebook.com/v21.0/<node>?fields=<campos>&access_token=<token>`
