@@ -21,6 +21,10 @@ git clone https://github.com/welltenorioc2g/avaliador-checkin-relatorio-c2g.git 
 
 O Claude Code reconhece a skill automaticamente a partir daí (invocação automática por contexto, ou manual com `/avaliador-checkin-relatorio-c2g`).
 
+## Configuração por gestor
+
+Cada gestor de tráfego tem sua própria carteira de clientes e sua própria pasta no Drive — por isso este repositório não guarda nenhum link de Drive. Na primeira vez que você usar a skill, ela vai perguntar o link (ou caminho local) da pasta com os check-ins/relatórios já existentes dos seus clientes, e salvar a resposta em `config.local.md`, um arquivo local (no `.gitignore`, nunca sobe pro GitHub) que evita repetir a pergunta nas próximas conversas.
+
 ## Duplicar/adaptar pra outro contexto
 
 Esta skill assume as convenções específicas da C2G (estrutura de pastas no Drive, as 6 perguntas, os 4 blocos internos, tom de voz). Pra adaptar pra outra agência ou processo, dá pra usar como ponto de partida — mas troque as referências de pasta, o vocabulário e os critérios de avaliação em `SKILL.md` e `references/`.

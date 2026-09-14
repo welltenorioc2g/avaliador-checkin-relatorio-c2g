@@ -21,7 +21,7 @@ Consulte os arquivos de referência sempre que: o Well pedir para gerar um check
 
 ## Acesso à API do Meta Ads (Graph API) — dados extras além do PDF
 
-O Well mantém um PDF chamado `Token do Meta Ads.pdf` na raiz da pasta Enviáveis do Drive, com um access token de longa duração do Meta Ads. Use isso quando o PDF de métricas que ele mandou não tiver informação suficiente pra escrever um bom check-in (ex.: precisa saber se uma campanha específica está ativa ou pausada agora, o texto exato de um anúncio, criativos disponíveis, estrutura de campanhas de uma conta) — nesses casos, consulte a Graph API diretamente em vez de pedir pro Well mandar mais dado.
+O gestor normalmente mantém um PDF chamado `Token do Meta Ads.pdf` na raiz da pasta configurada em `config.local.md` (ver "Onde ficam os arquivos dos clientes" abaixo), com um access token de longa duração do Meta Ads. Se não achar esse arquivo ou não souber onde ele está, pergunte ao gestor. Use o token quando o PDF de métricas que ele mandou não tiver informação suficiente pra escrever um bom check-in (ex.: precisa saber se uma campanha específica está ativa ou pausada agora, o texto exato de um anúncio, criativos disponíveis, estrutura de campanhas de uma conta) — nesses casos, consulte a Graph API diretamente em vez de pedir pro gestor mandar mais dado.
 
 **Regra de segurança inegociável — o token nunca é persistido nem exibido:**
 - **Nunca** escreva o token num arquivo em disco (nem temporário, nem no scratchpad) — isso é bloqueado pelo classificador de segurança do Claude Code ("Credential Materialization") e, mesmo que não fosse, é uma prática ruim.
@@ -69,24 +69,29 @@ Se o Well anexar um áudio (`.opus`, `.m4a`, etc., normalmente um encaminhamento
 
 ## Onde ficam os arquivos dos clientes
 
-Pasta raiz no Google Drive: https://drive.google.com/drive/folders/1Qtz7h5-bhO-2DdyTn-jAAVjMk3Cbnt0g?usp=sharing (link aberto, view-only — não precisa de login pra ler).
+Esta skill é usada por vários gestores de tráfego da C2G, e cada um tem sua própria carteira de clientes numa pasta de Drive diferente — não existe um link fixo válido pra todo mundo, então a skill não guarda um link fixo aqui.
 
-Dentro dela:
+**Como descobrir o local, no início de uma conversa que precise de histórico de cliente:**
+1. **Primeiro, confira se já existe `config.local.md`** na pasta desta skill (`~/.claude/skills/avaliador-checkin-relatorio-c2g/config.local.md`). Esse arquivo é local à máquina (está no `.gitignore`, nunca vai pro Git/GitHub) e guarda o link/caminho que o gestor já informou numa conversa anterior. Se existir, use o que estiver lá e não pergunte de novo.
+2. **Se não existir ainda** (primeiro uso nesta máquina, ou o gestor nunca informou), **pergunte a ele**: o link do Drive (ou o caminho local, se o Drive estiver sincronizado nesta máquina) da pasta raiz onde ficam os check-ins semanais e relatórios mensais já existentes dos clientes dele, pra você usar como base/continuidade — já que cada gestor tem sua própria carteira e estrutura pode variar.
+3. **Depois que ele informar, grave em `config.local.md`** (crie o arquivo se não existir) nesta mesma pasta da skill, com o link/caminho recebido, pra não precisar perguntar de novo nas próximas conversas nesta máquina. Grave só o link/caminho — nunca nome de cliente nem outro dado sensível nesse arquivo.
+
+Dentro da pasta raiz que o gestor indicar, o padrão observado até agora (pode variar um pouco por gestor — confirme se a nomenclatura dele for diferente):
 - `Checkin semanal/` — um Google Doc por cliente ativo, nomeado `[C2G] Checkin semanal - <Cliente>`. Inativos ficam em `Checkin semanal/Inativos/`.
 - `Relatório mensal/` — mesma lógica, nomeado `[C2G] Relatório mensal - <Cliente>`, com `Relatório mensal/Inativos/` pros inativos.
 
 Cada um desses docs **acumula o histórico inteiro** daquele cliente: a entrada mais recente fica no topo, separada das anteriores por uma linha `________`. Não existe um doc por semana/mês — é sempre o mesmo doc, com tudo dentro, em ordem cronológica decrescente (mais recente primeiro).
 
-O nome do cliente no arquivo pode não bater 100% com o nome no cabeçalho de um PDF recebido (ex.: "Dra. Alexandra" no PDF vs. "Dra. Alexandra Cariello" no nome do arquivo) — combine pelo nome mais próximo; se houver ambiguidade real entre dois clientes parecidos, confirme com o Well antes de prosseguir.
+O nome do cliente no arquivo pode não bater 100% com o nome no cabeçalho de um PDF recebido (ex.: "Dra. Alexandra" no PDF vs. "Dra. Alexandra Cariello" no nome do arquivo) — combine pelo nome mais próximo; se houver ambiguidade real entre dois clientes parecidos, confirme com o gestor antes de prosseguir.
 
 ### Como ler o conteúdo desses docs
 
-Se esta máquina tiver o Google Drive sincronizado localmente (verifique algo como `~/Library/CloudStorage/GoogleDrive-<email>/Meu Drive/Enviáveis/`), o caminho mais rápido é:
+Se esta máquina tiver o Google Drive sincronizado localmente (verifique algo como `~/Library/CloudStorage/GoogleDrive-<email>/Meu Drive/<pasta configurada>/`), o caminho mais rápido é:
 1. Achar o arquivo `.gdoc` do cliente na subpasta certa (nome bate com o padrão acima).
 2. Extrair o `doc_id` de dentro dele: `grep -o '"doc_id":"[^"]*"' "arquivo.gdoc"`.
 3. Buscar o texto puro sem precisar de login: `curl -sL "https://docs.google.com/document/d/<doc_id>/export?format=txt"`.
 
-Se não houver sincronização local, use o navegador: abra a pasta do link acima, entre na subpasta certa, abra o Doc do cliente e leia o conteúdo renderizado.
+Se não houver sincronização local, use o navegador: abra o link salvo em `config.local.md`, entre na subpasta certa, abra o Doc do cliente e leia o conteúdo renderizado.
 
 ### Pasta "Dados de campanhas" — planilhas de dados brutos por conta
 
@@ -94,7 +99,7 @@ Dentro da pasta raiz existe também `Dados de campanhas/`, com planilhas (Google
 
 ## Pasta "Entrada de relatórios" — inbox semanal de PDFs pra processar em lote
 
-Dentro da pasta raiz existe também `Entrada de relatórios/` (local: `.../Enviáveis/Entrada de relatórios/`). É o inbox onde o Well sobe, toda segunda-feira, os PDFs brutos de todos os clientes da semana de uma vez — e apaga tudo no mesmo dia assim que os check-ins estiverem prontos.
+Dentro da pasta raiz (a mesma configurada em `config.local.md`, ver seção anterior) existe também, pra quem usa esse fluxo, uma subpasta `Entrada de relatórios/`. É o inbox onde o gestor sobe, toda segunda-feira, os PDFs brutos de todos os clientes da semana de uma vez — e apaga tudo no mesmo dia assim que os check-ins estiverem prontos.
 
 Implicações práticas:
 - **O conteúdo dessa pasta é efêmero.** Ela pode estar vazia, ter 1 arquivo ou ter 15+ arquivos, dependendo do momento da segunda-feira em que for consultada. Sumiu um arquivo que estava lá antes? Não é erro — o Well já processou e apagou. Não reclame de arquivo "faltando" nem tente usar como histórico.
