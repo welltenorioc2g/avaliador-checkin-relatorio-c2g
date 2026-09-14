@@ -2,6 +2,11 @@
 
 Todas as mudanças relevantes na skill ficam registradas aqui, mais recente primeiro.
 
+## 2026-09-14 (4)
+
+- Nova seção "Como o gestor pode te mandar os dados de um cliente", listando todos os formatos aceitos: PDF anexado direto no chat, lote via pasta "Entrada de relatórios" do Drive (qualquer gestor pode criar a sua), print/imagem com dados, texto já escrito, ou áudio do WhatsApp como contexto extra.
+- Padronizada a linguagem de "Well" pra "gestor" nas seções de identificação de PDF e fluxo completo, já que a skill agora é usada por vários gestores com carteiras diferentes.
+
 ## 2026-09-14 (3)
 
 - Adicionado passo a passo pra gerar um token do Meta Ads do zero (Usuário do Sistema no Business Manager, com token que não expira em 60 dias) pra gestores que ainda não têm um configurado.

@@ -113,34 +113,46 @@ Se não houver sincronização local, use o navegador: abra o link salvo em `con
 
 Dentro da pasta raiz existe também `Dados de campanhas/`, com planilhas (Google Sheets) de dados de campanhas isoladas, uma fonte a mais além da API e dos PDFs recebidos. Por enquanto só tem planilhas do **Google Ads** (Meta Ads deve vir depois). Use essa pasta quando precisar consultar algum dado específico de campanha que não veio no PDF nem é fácil de puxar da API do Meta (já que essas planilhas cobrem Google Ads, que não tem endpoint de API configurado nesta skill). Mesma técnica de leitura: se for `.gsheet` local, extrair o `doc_id` e buscar via `https://docs.google.com/spreadsheets/d/<doc_id>/export?format=csv`; sem sincronização local, abrir pelo navegador.
 
+## Como o gestor pode te mandar os dados de um cliente
+
+Não existe um único jeito certo — aceite qualquer um destes formatos, sem pedir pro gestor mudar de canal:
+
+1. **Anexar o PDF direto no chat**, de um cliente por vez. É o caso mais comum fora do processamento em lote — segue direto pra "Identificar o que foi recebido antes de agir" abaixo.
+2. **Subir os PDFs de vários clientes na pasta "Entrada de relatórios" do Drive** (ver seção logo abaixo) e pedir pra processar tudo de uma vez. É o padrão de quem processa a carteira inteira numa sentada (ex.: toda segunda-feira) — qualquer gestor pode criar essa mesma subpasta na raiz configurada em `config.local.md` pra usar esse fluxo, não é exclusivo de quem já tinha.
+3. **Colar uma imagem/print** (ex.: uma tabela de metas recebida por WhatsApp, um print de dashboard) — trate como dado bruto também, extraindo os números visíveis; se a imagem não trouxer todo o contexto necessário (ex.: taxa de conversão esperada, meta do cliente), pergunte o que faltar em vez de supor.
+4. **Colar o texto já escrito** (rascunho pronto ou versão revisada de uma rodada anterior) — não é dado bruto, vai direto pro fluxo de avaliação, sem passar pela geração de rascunho.
+5. **Anexar um áudio do WhatsApp** — ver seção "Áudio do WhatsApp como contexto extra" acima; normalmente complementa um PDF/texto já mandado, não substitui.
+
+Qualquer que seja o formato, a lógica de identificação (semanal vs. mensal, dado bruto vs. texto) é a mesma — ver "Identificar o que foi recebido antes de agir" abaixo.
+
 ## Pasta "Entrada de relatórios" — inbox semanal de PDFs pra processar em lote
 
 Dentro da pasta raiz (a mesma configurada em `config.local.md`, ver seção anterior) existe também, pra quem usa esse fluxo, uma subpasta `Entrada de relatórios/`. É o inbox onde o gestor sobe, toda segunda-feira, os PDFs brutos de todos os clientes da semana de uma vez — e apaga tudo no mesmo dia assim que os check-ins estiverem prontos.
 
 Implicações práticas:
-- **O conteúdo dessa pasta é efêmero.** Ela pode estar vazia, ter 1 arquivo ou ter 15+ arquivos, dependendo do momento da segunda-feira em que for consultada. Sumiu um arquivo que estava lá antes? Não é erro — o Well já processou e apagou. Não reclame de arquivo "faltando" nem tente usar como histórico.
+- **O conteúdo dessa pasta é efêmero.** Ela pode estar vazia, ter 1 arquivo ou ter 15+ arquivos, dependendo do momento da segunda-feira em que for consultada. Sumiu um arquivo que estava lá antes? Não é erro — o gestor já processou e apagou. Não reclame de arquivo "faltando" nem tente usar como histórico.
 - **Não confie só no nome do arquivo** para decidir semanal vs. mensal — os nomes vêm de um export automático e podem estar levemente errados (ex.: um arquivo chamado `checkin_semanal_...` mas com intervalo de datas de um mês inteiro, ou `relatorio_mensal_...` com intervalo de só 7 dias). O intervalo de datas de dentro do PDF (cabeçalho) é a fonte de verdade — sempre confirme por ali, mesmo que o nome do arquivo pareça claro.
 - **Cada arquivo pode ser de um cliente diferente** — o nome do arquivo indica o cliente, mas combine com a lista de clientes em `Checkin semanal/` e `Relatório mensal/` pelo nome mais próximo (mesma regra de matching já descrita acima).
 
 ### Gerar todos os check-ins/relatórios de uma vez (processamento em lote)
 
-Quando o Well pedir pra gerar/processar tudo da pasta de entrada de uma vez (ex.: "gera todos os checkins", "processa a entrada", "roda a segunda-feira"):
+Quando o gestor pedir pra gerar/processar tudo da pasta de entrada de uma vez (ex.: "gera todos os checkins", "processa a entrada", "roda a segunda-feira"):
 
 1. Liste todos os arquivos atualmente em `Entrada de relatórios/`.
 2. Para cada arquivo, rode o Passo 1 de "Gerar check-in/relatório a partir de dados brutos" (identificar cliente, tipo e período pelo conteúdo do PDF, não só pelo nome do arquivo).
 3. Para cada um, siga os Passos 2-4 normalmente (buscar histórico do cliente no Drive, aplicar a regra da 2ª semana quando se aplicar, escrever o rascunho) — **cada cliente é independente**, um erro ou ambiguidade num arquivo não deve travar o processamento dos outros.
 4. Entregue os rascunhos de todos, **claramente separados e rotulados pelo nome do cliente** (ex.: um cabeçalho `### <Cliente>` antes de cada rascunho), na ordem em que os arquivos aparecem na pasta.
-5. Continua valendo a regra do fluxo completo: essa etapa só entrega rascunhos — sem `Status` nem blocos. Blocos de cada cliente só saem depois que o Well revisar e reenviar o texto daquele cliente específico, e ele for aprovado.
+5. Continua valendo a regra do fluxo completo: essa etapa só entrega rascunhos — sem `Status` nem blocos. Blocos de cada cliente só saem depois que o gestor revisar e reenviar o texto daquele cliente específico, e ele for aprovado.
 6. Se algum arquivo tiver um problema real (cliente não identificável, período ambíguo, nome sem correspondência clara na lista de clientes), pule esse arquivo, sinalize o problema junto com os outros rascunhos, e continue com o resto — não pare o lote inteiro por causa de um arquivo problemático.
 
 ## Identificar o que foi recebido antes de agir
 
-Sempre que o Well mandar um PDF/relatório (em vez de colar texto pronto), identifique primeiro:
+Sempre que o gestor mandar um PDF/relatório/imagem (em vez de colar texto pronto), identifique primeiro:
 
 **a) Check-in semanal ou relatório mensal?**
 - Olhe o intervalo de datas do cabeçalho do relatório (algo como "dados analisados entre X e Y"). ~7 dias = check-in semanal. ~28-31 dias = relatório mensal.
 - Cheque também o nome do arquivo e o título dentro do PDF, se disponíveis (costumam já indicar "Checkin semanal" ou "Relatório mensal").
-- Se os sinais não baterem ou o intervalo for atípico, pergunte ao Well antes de seguir.
+- Se os sinais não baterem ou o intervalo for atípico, pergunte ao gestor antes de seguir.
 
 **b) É dado bruto ou já é texto corrido?**
 - Um PDF de dashboard traz só números/tabelas (CPM, CTR, investimento, conversas, etc.), sem nenhuma frase explicando o "porquê". Isso é **dado bruto** — siga para "Gerar check-in/relatório a partir de dados brutos" abaixo.
@@ -150,12 +162,12 @@ Sempre que o Well mandar um PDF/relatório (em vez de colar texto pronto), ident
 
 Quando o ponto de partida é um PDF de dados brutos (não um texto já escrito), o processo tem etapas separadas — **nunca pule direto pra blocos**:
 
-1. **Well manda o PDF de dados brutos.** A skill identifica o tipo (semanal/mensal), busca o histórico no Drive e gera só o **rascunho do texto** (ver "Gerar check-in/relatório a partir de dados brutos" abaixo). Nessa etapa: sem `Status`, sem blocos — só o rascunho pra revisão.
-2. **Well revisa e reenvia o texto** (o rascunho ajustado, ou reescrito do zero por ele).
+1. **O gestor manda o PDF de dados brutos** (em qualquer um dos formatos de "Como o gestor pode te mandar os dados" acima). A skill identifica o tipo (semanal/mensal), busca o histórico no Drive e gera só o **rascunho do texto** (ver "Gerar check-in/relatório a partir de dados brutos" abaixo). Nessa etapa: sem `Status`, sem blocos — só o rascunho pra revisão.
+2. **O gestor revisa e reenvia o texto** (o rascunho ajustado, ou reescrito do zero por ele).
 3. **A skill avalia esse texto reenviado** como no modo avaliação normal: confere as 6 perguntas e define `Status: Aprovado ✅` ou `Status: Reprovado ❌`.
-4. **Só gera os 4 blocos internos se o status for Aprovado.** Se reprovado, a resposta pára nas correções — sem blocos — até o Well reenviar de novo um texto que passe na avaliação. Repita os passos 2-4 quantas vezes forem necessárias.
+4. **Só gera os 4 blocos internos se o status for Aprovado.** Se reprovado, a resposta pára nas correções — sem blocos — até o gestor reenviar de novo um texto que passe na avaliação. Repita os passos 2-4 quantas vezes forem necessárias.
 
-Esse fluxo em 4 passos vale tanto pra check-in semanal quanto relatório mensal. Se o Well já mandar o texto pronto direto (sem passar pelo PDF), o processo começa direto no passo 3.
+Esse fluxo em 4 passos vale tanto pra check-in semanal quanto relatório mensal. Se o gestor já mandar o texto pronto direto (sem passar pelo PDF), o processo começa direto no passo 3.
 
 ## Gerar check-in/relatório a partir de dados brutos
 
