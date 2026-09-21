@@ -117,9 +117,15 @@ Se esta máquina tiver o Google Drive sincronizado localmente (verifique algo co
 
 Se não houver sincronização local, use o navegador: abra o link salvo em `config.local.md`, entre na subpasta certa, abra o Doc do cliente e leia o conteúdo renderizado.
 
-### Pasta "Dados de campanhas" — planilhas de dados brutos por conta
+### Pasta "Dados de campanhas" — planilha do Google Ads por campanha (opcional)
 
-Dentro da pasta raiz existe também `Dados de campanhas/`, com planilhas (Google Sheets) de dados de campanhas isoladas, uma fonte a mais além da API e dos PDFs recebidos. Por enquanto só tem planilhas do **Google Ads** (Meta Ads deve vir depois). Use essa pasta quando precisar consultar algum dado específico de campanha que não veio no PDF nem é fácil de puxar da API do Meta (já que essas planilhas cobrem Google Ads, que não tem endpoint de API configurado nesta skill). Mesma técnica de leitura: se for `.gsheet` local, extrair o `doc_id` e buscar via `https://docs.google.com/spreadsheets/d/<doc_id>/export?format=csv`; sem sincronização local, abrir pelo navegador.
+Esta skill não tem acesso por API ao Google Ads, então a única fonte de dado **por campanha e por dia** do Google é uma planilha (Google Sheets), se o gestor tiver uma. Onde ela fica, no padrão da C2G: `Dados de campanhas/Google Ads/` dentro da pasta raiz configurada, com colunas como Data, Campanha, ID da campanha, Tipo, Impressões, Cliques, Conversões e Custo. **Pergunte ao gestor se ele tem algo assim** (uma exportação ou planilha de Google Ads por campanha). Sem ela, a skill trata o Google só pelo que vem no PDF. (Meta Ads também pode ganhar planilha no futuro, mas hoje o Meta se consulta pela API.)
+
+Como usar direito:
+1. **Ela costuma ter várias abas** (uma por cliente ou grupo de clientes). O export `https://docs.google.com/spreadsheets/d/<doc_id>/export?format=csv` só traz a **primeira aba**. Pra achar as outras, baixe `https://docs.google.com/spreadsheets/d/<doc_id>/htmlview`, procure os `gid=` no HTML e busque cada aba com `.../export?format=csv&gid=<gid>`. Se o arquivo for `.gsheet` local, extraia o `doc_id` de dentro dele (mesma técnica dos Docs).
+2. **Ache a aba do cliente pelos nomes das campanhas do PDF** e confira: o custo e as conversões da semana somados na planilha devem bater com o Google do PDF. Se nenhuma aba bater, o cliente não está na planilha: use o Google só do PDF e avise o gestor.
+3. **Serve pra:** quebrar por campanha e por dia, comparar a semana atual com a anterior por campanha, e achar a causa de uma queda (ex.: uma campanha sem gasto em certos dias, ou um pico de gasto).
+4. **Limites:** a planilha pode ter defasagem de 1 a 2 dias (a última data pode ser anterior ao fim do período). E ela **não tem histórico de alterações**: mostra que uma campanha parou de gastar, mas não quem parou nem por quê. Nunca afirme uma ação do gestor no Google (pausar, trocar palavra-chave, mexer em verba) a partir da planilha: descreva só o que os dados mostram e peça confirmação. Exemplo: "a campanha X ficou sem gasto de 17 a 20/09" é fato da planilha; "pausei a campanha X por causa do custo" só vale se o gestor confirmar.
 
 ## Como o gestor pode te mandar os dados de um cliente
 
