@@ -25,6 +25,14 @@ O gestor normalmente mantém um PDF chamado `Token do Meta Ads.pdf` na raiz da p
 
 ### Se o gestor ainda não tiver um token — como gerar um
 
+**Avise logo, antes de gerar o primeiro rascunho, que o token é muito recomendado.** A skill funciona sem ele, mas só com os números do PDF, e perde justamente o que mais evita erro num check-in:
+- **Log de alterações da conta:** sem ele a skill não sabe o que o gestor realmente fez na semana, então o P2 vira chute ou fica em branco.
+- **Explicação do resultado por campanha:** sem a API não dá pra confirmar qual campanha/anúncio realmente trouxe (ou derrubou) o resultado.
+- **Alerta de pagamento:** conta em "pagamento necessário" pausa os anúncios sem ninguém ver, e só o log da conta mostra isso.
+- **Links dos melhores anúncios** e o **estado atual** (o que está ativo ou pausado agora).
+
+Se o gestor preferir seguir sem token por enquanto, siga só com o PDF, mas deixe claro em cada rascunho que os pontos que dependem da API (ações da semana, causa de queda/melhora, melhores anúncios com link) precisam ser preenchidos ou confirmados por ele. **Nunca invente ação executada nem causa que só a API mostraria.**
+
 O ideal é um token de **Usuário do Sistema** (System User) do Business Manager, porque esse tipo não expira em 60 dias como um token de usuário pessoal — só é revogado manualmente. Passo a passo:
 
 1. **Crie um App no Meta for Developers** (se a agência ainda não tiver um): acesse [developers.facebook.com/apps](https://developers.facebook.com/apps), "Criar app" → tipo **Negócios** → dê um nome (ex.: "C2G Ads Access") → conclua a criação. No painel do app, adicione o produto **Marketing API**.

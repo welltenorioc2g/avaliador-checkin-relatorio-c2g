@@ -4,6 +4,8 @@ Todas as mudanças relevantes na skill ficam registradas aqui, mais recente prim
 
 ## 2026-09-21
 
+- Sem token do Meta Ads: a skill agora avisa logo, antes do primeiro rascunho, que o token é muito recomendado, explica o que se perde sem ele (log de alterações, causa por campanha, alerta de pagamento, links dos anúncios, estado atual) e como seguir só com o PDF sem inventar ação nem causa.
+
 - Regra de tamanho: a contagem de caracteres agora vale pro texto inteiro que vai pro cliente, incluindo a lista de melhores anúncios com links. Um rascunho tinha sido medido só pelo corpo (1.715, dentro da faixa) e saiu com 2.819 no total, o que estourava o limite. Passou a valer: medir o texto completo antes de entregar e cortar se passar de ~1.900 (gancho do anúncio em vez do nome completo, 1 anúncio por etapa de funil).
 
 ## 2026-09-14 (4)
