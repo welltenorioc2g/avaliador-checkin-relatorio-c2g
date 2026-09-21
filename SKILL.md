@@ -7,6 +7,16 @@ description: 'Skill oficial da agência C2G (2Gather) para avaliar OU gerar chec
 
 Skill da agência C2G (2Gather) para conferir se check-ins semanais e relatórios mensais enviados a clientes de tráfego pago cobrem o essencial do processo interno da agência, e para extrair o conteúdo em blocos padronizados para o formulário interno.
 
+## Checagem de atualização da skill (uma vez por conversa, no começo)
+
+Na **primeira vez** que esta skill for usada numa conversa, antes de começar o trabalho, veja rapidamente se existe versão nova no GitHub e avise o gestor. Faça uma vez só por conversa, não a cada cliente ou a cada mensagem.
+
+1. Rode, na pasta da skill (`~/.claude/skills/avaliador-checkin-relatorio-c2g`): `git fetch -q origin && git rev-list --count HEAD..origin/main`.
+2. **Pule em silêncio, sem avisar nem atrapalhar**, se: a pasta não for um repositório git (instalada por zip), não houver internet, o comando demorar ou falhar, ou o resultado for `0` (já está atualizada).
+3. Se o resultado for maior que 0, mostre em 2 a 3 linhas o que mudou (`git log --oneline HEAD..origin/main`, traduzindo pro gestor em linguagem simples) e **pergunte se ele quer atualizar agora**. Depois siga com o pedido dele normalmente, sem esperar a resposta pra trabalhar.
+4. Só atualize se ele disser que sim, com `git pull --ff-only`. Se falhar (ex.: ele mexeu em arquivos da skill e deu conflito), **não force nada**: explique o motivo e sugira falar com o Well ou usar um fork. O `config.local.md` nunca é afetado (está no `.gitignore`).
+5. Depois de atualizar, **releia este `SKILL.md`** antes de continuar, porque as regras podem ter mudado.
+
 ## Fonte de verdade — não resumir, consultar quando precisar de detalhe
 
 Este SKILL.md traz o resumo operacional. O conteúdo original, na íntegra, está em `references/`:

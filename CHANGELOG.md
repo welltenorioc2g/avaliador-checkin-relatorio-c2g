@@ -4,6 +4,8 @@ Todas as mudanças relevantes na skill ficam registradas aqui, mais recente prim
 
 ## 2026-09-21
 
+- Checagem de atualização: no começo da primeira vez que a skill é usada numa conversa, ela confere o GitHub (`git fetch` + contagem de commits novos) e, se houver versão nova, avisa o gestor em linguagem simples e pergunta se quer atualizar (`git pull --ff-only`, sem forçar). Pula em silêncio se a pasta não for um repositório git, se não houver internet ou se já estiver atualizada. O `config.local.md` nunca é afetado.
+
 - README: nova seção "Como receber atualizações" (`git pull` dentro da pasta da skill), avisando que não atualiza sozinho, que o `config.local.md` não é afetado, que não se deve editar a cópia clonada e que quem baixou só o zip não recebe atualização.
 
 - Planilha do Google Ads por campanha: a skill agora explica que é opcional e pede ao gestor se ele tem uma, como ler as várias abas (`htmlview` pra achar os `gid`), como achar a aba do cliente pelos nomes das campanhas do PDF e conferir os totais, o que ela serve, e os limites (defasagem de 1 a 2 dias e nenhum histórico de alterações, então nunca afirmar ação do gestor no Google a partir dela).
