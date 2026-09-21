@@ -4,7 +4,7 @@ Todas as mudanças relevantes na skill ficam registradas aqui, mais recente prim
 
 ## 2026-09-21
 
-- Checagem de atualização: no começo da primeira vez que a skill é usada numa conversa, ela confere o GitHub (`git fetch` + contagem de commits novos) e, se houver versão nova, avisa o gestor em linguagem simples e pergunta se quer atualizar (`git pull --ff-only`, sem forçar). Pula em silêncio se a pasta não for um repositório git, se não houver internet ou se já estiver atualizada. O `config.local.md` nunca é afetado.
+- Checagem de atualização: no começo de cada pedido novo (e não só uma vez por conversa, pra funcionar em conversas que ficam abertas pra sempre), com um marcador de data `.ultima-checagem` (ignorado pelo git) que limita a 1 checagem por dia, a skill confere o GitHub (`git fetch` + contagem de commits novos) e, se houver versão nova, avisa o gestor em linguagem simples e pergunta se quer atualizar (`git pull --ff-only`, sem forçar). Pula em silêncio se a pasta não for um repositório git, se não houver internet ou se já estiver atualizada. O `config.local.md` nunca é afetado.
 
 - README: nova seção "Como receber atualizações" (`git pull` dentro da pasta da skill), avisando que não atualiza sozinho, que o `config.local.md` não é afetado, que não se deve editar a cópia clonada e que quem baixou só o zip não recebe atualização.
 

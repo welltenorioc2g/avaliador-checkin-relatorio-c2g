@@ -39,7 +39,7 @@ Quem clonou recebe as mudanças com um comando dentro da pasta da skill:
 cd ~/.claude/skills/avaliador-checkin-relatorio-c2g && git pull
 ```
 
-- **A skill avisa quando há versão nova.** Na primeira vez que ela é usada numa conversa, confere o GitHub e, se houver atualização, te avisa e pergunta se quer atualizar (só atualiza se você disser que sim). Se preferir, rode o comando acima quando quiser, ou peça pro Claude Code "atualiza a skill".
+- **A skill avisa quando há versão nova.** Quando você começa um pedido novo (novo cliente, lote ou semana), ela confere o GitHub no máximo uma vez por dia, mesmo numa conversa antiga que você nunca fechou. Se houver atualização, te avisa e pergunta se quer atualizar (só atualiza se você disser que sim). Se preferir, rode o comando acima quando quiser, ou peça pro Claude Code "atualiza a skill".
 - **Seu `config.local.md` não é afetado.** Ele está no `.gitignore`, então seu link do Drive continua no lugar depois de atualizar.
 - **Não edite os arquivos da cópia clonada** (`SKILL.md`, `references/`). Se você mexer neles, o `git pull` pode dar conflito. Se tiver uma sugestão, avise o Well ou faça um fork.
 - **Quem baixou só o arquivo `.skill` (zip) não recebe atualização**: precisa baixar de novo. Por isso o jeito recomendado é clonar.
