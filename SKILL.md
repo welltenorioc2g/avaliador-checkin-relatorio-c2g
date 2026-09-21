@@ -111,8 +111,8 @@ Esta skill é usada por vários gestores de tráfego da C2G, e cada um tem sua p
 3. **Depois que ele informar, grave em `config.local.md`** (crie o arquivo se não existir) nesta mesma pasta da skill, com o link/caminho recebido, pra não precisar perguntar de novo nas próximas conversas nesta máquina. Grave só o link/caminho — nunca nome de cliente nem outro dado sensível nesse arquivo.
 
 Dentro da pasta raiz que o gestor indicar, o padrão observado até agora (pode variar um pouco por gestor — confirme se a nomenclatura dele for diferente):
-- `Checkin semanal/` — um Google Doc por cliente ativo, nomeado `[C2G] Checkin semanal - <Cliente>`. Inativos ficam em `Checkin semanal/Inativos/`.
-- `Relatório mensal/` — mesma lógica, nomeado `[C2G] Relatório mensal - <Cliente>`, com `Relatório mensal/Inativos/` pros inativos.
+- `Checkin semanal/` — um Google Doc por cliente ativo, nomeado `[C2G] Checkin semanal - <Cliente>`.
+- `Relatório mensal/` — mesma lógica, nomeado `[C2G] Relatório mensal - <Cliente>`.
 
 Cada um desses docs **acumula o histórico inteiro** daquele cliente: a entrada mais recente fica no topo, separada das anteriores por uma linha `________`. Não existe um doc por semana/mês — é sempre o mesmo doc, com tudo dentro, em ordem cronológica decrescente (mais recente primeiro).
 
@@ -127,11 +127,10 @@ Pasta raiz da sua carteira          <- o link que o gestor passa
 |-- Token do Meta Ads.pdf           (recomendado: ver seção do token acima)
 |-- Checkin semanal/
 |   |-- [C2G] Checkin semanal - <Cliente A>     (1 Google Doc por cliente)
-|   |-- [C2G] Checkin semanal - <Cliente B>
-|   `-- Inativos/                               (clientes que saíram)
+|   `-- [C2G] Checkin semanal - <Cliente B>
 |-- Relatório mensal/
 |   |-- [C2G] Relatório mensal - <Cliente A>
-|   `-- Inativos/
+|   `-- [C2G] Relatório mensal - <Cliente B>
 |-- Entrada de relatórios/          (opcional: PDFs da semana pra processar em lote)
 `-- Dados de campanhas/             (opcional)
     `-- Google Ads/                 (planilha por campanha, ver seção da planilha)

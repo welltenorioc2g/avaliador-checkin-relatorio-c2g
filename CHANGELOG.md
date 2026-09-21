@@ -4,6 +4,8 @@ Todas as mudanças relevantes na skill ficam registradas aqui, mais recente prim
 
 ## 2026-09-21
 
+- Removida a subpasta `Inativos/` da estrutura de Drive mostrada e descrita na skill: não é necessária pra ela funcionar.
+
 - Estrutura do Drive: ao pedir o link da pasta pela primeira vez, a skill agora mostra a estrutura de pastas esperada (`Checkin semanal/`, `Relatório mensal/`, opcionais `Entrada de relatórios/` e `Dados de campanhas/`), explica como montar os Docs (um por cliente, histórico com o mais recente no topo, separador `________________`, colar o texto aprovado a cada semana), o que fazer sem histórico, e a troca de permissão de leitura. Não cria nada no Drive do gestor por conta própria.
 
 - Checagem de atualização: no começo de cada pedido novo (e não só uma vez por conversa, pra funcionar em conversas que ficam abertas pra sempre), com um marcador de data `.ultima-checagem` (ignorado pelo git) que limita a 1 checagem por dia, a skill confere o GitHub (`git fetch` + contagem de commits novos) e, se houver versão nova, avisa o gestor em linguagem simples e pergunta se quer atualizar (`git pull --ff-only`, sem forçar). Pula em silêncio se a pasta não for um repositório git, se não houver internet ou se já estiver atualizada. O `config.local.md` nunca é afetado.
