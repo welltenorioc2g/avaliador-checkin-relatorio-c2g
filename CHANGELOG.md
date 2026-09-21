@@ -4,6 +4,8 @@ Todas as mudanças relevantes na skill ficam registradas aqui, mais recente prim
 
 ## 2026-09-21
 
+- README: nova seção "Como receber atualizações" (`git pull` dentro da pasta da skill), avisando que não atualiza sozinho, que o `config.local.md` não é afetado, que não se deve editar a cópia clonada e que quem baixou só o zip não recebe atualização.
+
 - Planilha do Google Ads por campanha: a skill agora explica que é opcional e pede ao gestor se ele tem uma, como ler as várias abas (`htmlview` pra achar os `gid`), como achar a aba do cliente pelos nomes das campanhas do PDF e conferir os totais, o que ela serve, e os limites (defasagem de 1 a 2 dias e nenhum histórico de alterações, então nunca afirmar ação do gestor no Google a partir dela).
 
 - Sem token do Meta Ads: a skill agora avisa logo, antes do primeiro rascunho, que o token é muito recomendado, explica o que se perde sem ele (log de alterações, causa por campanha, alerta de pagamento, links dos anúncios, estado atual) e como seguir só com o PDF sem inventar ação nem causa.

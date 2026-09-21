@@ -13,7 +13,7 @@ Todo o funcionamento está documentado em [`SKILL.md`](SKILL.md); o racional com
 
 ## Como instalar
 
-Clone (ou baixe) esta pasta pra dentro de `~/.claude/skills/` na sua máquina:
+Clone esta pasta pra dentro de `~/.claude/skills/` na sua máquina (clonar, e não só baixar o zip, é o que permite receber atualizações depois):
 
 ```bash
 git clone https://github.com/welltenorioc2g/avaliador-checkin-relatorio-c2g.git ~/.claude/skills/avaliador-checkin-relatorio-c2g
@@ -29,6 +29,18 @@ Cada gestor de tráfego tem sua própria carteira de clientes e sua própria pas
 
 Esta skill assume as convenções específicas da C2G (estrutura de pastas no Drive, as 6 perguntas, os 4 blocos internos, tom de voz). Pra adaptar pra outra agência ou processo, dá pra usar como ponto de partida — mas troque as referências de pasta, o vocabulário e os critérios de avaliação em `SKILL.md` e `references/`.
 
-## Atualizações
+## Como receber atualizações
 
 Só o Well atualiza este repositório por enquanto. Mudanças são documentadas em [`CHANGELOG.md`](CHANGELOG.md) e no histórico de commits.
+
+Quem clonou recebe as mudanças com um comando dentro da pasta da skill:
+
+```bash
+cd ~/.claude/skills/avaliador-checkin-relatorio-c2g && git pull
+```
+
+- **Não atualiza sozinho.** Precisa rodar o comando acima de vez em quando, ou pedir pro Claude Code "atualiza a skill" (ele roda o `git pull` por você).
+- **Seu `config.local.md` não é afetado.** Ele está no `.gitignore`, então seu link do Drive continua no lugar depois de atualizar.
+- **Não edite os arquivos da cópia clonada** (`SKILL.md`, `references/`). Se você mexer neles, o `git pull` pode dar conflito. Se tiver uma sugestão, avise o Well ou faça um fork.
+- **Quem baixou só o arquivo `.skill` (zip) não recebe atualização**: precisa baixar de novo. Por isso o jeito recomendado é clonar.
+- Pra ver o que mudou desde a última vez, leia o [`CHANGELOG.md`](CHANGELOG.md).
