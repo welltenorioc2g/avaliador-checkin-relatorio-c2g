@@ -208,6 +208,8 @@ Levantamento feito sobre **443 entradas reais** de check-in/relatório de todos 
 - **Check-in semanal** (347 entradas analisadas): média **~1.620 caracteres**, mediana 1.563. Faixa típica (a maioria dos check-ins do Well cai aqui): **~1.300 a ~1.900 caracteres**.
 - **Relatório mensal** (96 entradas analisadas): média **~1.770 caracteres**, mediana 1.762. Faixa típica: **~1.400 a ~2.000 caracteres**.
 
+**A contagem é do texto inteiro que vai pro cliente, incluindo a lista de "melhores anúncios" com links, cumprimento e fechamento.** Nunca meça só o corpo e deixe a lista de fora: um rascunho já saiu com corpo de 1.715 caracteres (dentro da faixa) mas 2.819 no total, e o Well reclamou que estava longo. Rode a contagem do texto completo antes de entregar o rascunho e, se passar de ~1.900, corte antes de mandar: prefira o gancho do anúncio (só o texto final do nome, sem prefixos como "AD - VID - EXISTENTE - 05/08/26 -") e limite a lista a 1 anúncio por etapa de funil (2 no fundo, se fizer sentido).
+
 Use essas faixas como alvo ao escrever o rascunho: nem um textão de dado bruto (o que já é proibido por outra regra desta skill), nem um resumo raso demais que não dá conta das 6 perguntas com contexto. Casos legítimos podem sair fora da faixa (uma semana com muita coisa acontecendo, ou uma semana tranquila) — não corte contexto relevante só pra bater o número, é uma referência de calibragem, não um limite rígido.
 
 ## Por que essas 6 perguntas existem

@@ -2,6 +2,10 @@
 
 Todas as mudanças relevantes na skill ficam registradas aqui, mais recente primeiro.
 
+## 2026-09-21
+
+- Regra de tamanho: a contagem de caracteres agora vale pro texto inteiro que vai pro cliente, incluindo a lista de melhores anúncios com links. Um rascunho tinha sido medido só pelo corpo (1.715, dentro da faixa) e saiu com 2.819 no total, o que estourava o limite. Passou a valer: medir o texto completo antes de entregar e cortar se passar de ~1.900 (gancho do anúncio em vez do nome completo, 1 anúncio por etapa de funil).
+
 ## 2026-09-14 (4)
 
 - Nova seção "Como o gestor pode te mandar os dados de um cliente", listando todos os formatos aceitos: PDF anexado direto no chat, lote via pasta "Entrada de relatórios" do Drive (qualquer gestor pode criar a sua), print/imagem com dados, texto já escrito, ou áudio do WhatsApp como contexto extra.
