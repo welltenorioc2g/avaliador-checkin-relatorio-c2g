@@ -25,6 +25,10 @@ O Claude Code reconhece a skill automaticamente a partir daí (invocação autom
 
 Cada gestor de tráfego tem sua própria carteira de clientes e sua própria pasta no Drive — por isso este repositório não guarda nenhum link de Drive. Na primeira vez que você usar a skill, ela vai perguntar o link (ou caminho local) da pasta com os check-ins/relatórios já existentes dos seus clientes, e salvar a resposta em `config.local.md`, um arquivo local (no `.gitignore`, nunca sobe pro GitHub) que evita repetir a pergunta nas próximas conversas.
 
+## Estrutura do Drive
+
+Na primeira vez, além de perguntar o link, a skill mostra a estrutura de pastas que ela espera (uma pasta raiz com `Checkin semanal/` e `Relatório mensal/`, um Google Doc por cliente com o histórico de check-ins, mais recente no topo, separados por `________________`) e te guia pra montar se você ainda não tiver. Os detalhes estão na seção "Estrutura do Drive que a skill espera" do [`SKILL.md`](SKILL.md).
+
 ## Duplicar/adaptar pra outro contexto
 
 Esta skill assume as convenções específicas da C2G (estrutura de pastas no Drive, as 6 perguntas, os 4 blocos internos, tom de voz). Pra adaptar pra outra agência ou processo, dá pra usar como ponto de partida — mas troque as referências de pasta, o vocabulário e os critérios de avaliação em `SKILL.md` e `references/`.

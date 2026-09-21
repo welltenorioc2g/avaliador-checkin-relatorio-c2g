@@ -107,7 +107,7 @@ Esta skill é usada por vários gestores de tráfego da C2G, e cada um tem sua p
 
 **Como descobrir o local, no início de uma conversa que precise de histórico de cliente:**
 1. **Primeiro, confira se já existe `config.local.md`** na pasta desta skill (`~/.claude/skills/avaliador-checkin-relatorio-c2g/config.local.md`). Esse arquivo é local à máquina (está no `.gitignore`, nunca vai pro Git/GitHub) e guarda o link/caminho que o gestor já informou numa conversa anterior. Se existir, use o que estiver lá e não pergunte de novo.
-2. **Se não existir ainda** (primeiro uso nesta máquina, ou o gestor nunca informou), **pergunte a ele**: o link do Drive (ou o caminho local, se o Drive estiver sincronizado nesta máquina) da pasta raiz onde ficam os check-ins semanais e relatórios mensais já existentes dos clientes dele, pra você usar como base/continuidade — já que cada gestor tem sua própria carteira e estrutura pode variar.
+2. **Se não existir ainda** (primeiro uso nesta máquina, ou o gestor nunca informou), **pergunte a ele**: o link do Drive (ou o caminho local, se o Drive estiver sincronizado nesta máquina) da pasta raiz onde ficam os check-ins semanais e relatórios mensais já existentes dos clientes dele, pra você usar como base/continuidade — já que cada gestor tem sua própria carteira e estrutura pode variar. **Junto com a pergunta, mostre a estrutura de pastas esperada** (seção "Estrutura do Drive que a skill espera", logo abaixo), pra ele já saber como organizar. Se ele ainda não tiver essa pasta, ofereça guiá-lo pra criar (não crie nada no Drive dele por conta própria).
 3. **Depois que ele informar, grave em `config.local.md`** (crie o arquivo se não existir) nesta mesma pasta da skill, com o link/caminho recebido, pra não precisar perguntar de novo nas próximas conversas nesta máquina. Grave só o link/caminho — nunca nome de cliente nem outro dado sensível nesse arquivo.
 
 Dentro da pasta raiz que o gestor indicar, o padrão observado até agora (pode variar um pouco por gestor — confirme se a nomenclatura dele for diferente):
@@ -117,6 +117,32 @@ Dentro da pasta raiz que o gestor indicar, o padrão observado até agora (pode 
 Cada um desses docs **acumula o histórico inteiro** daquele cliente: a entrada mais recente fica no topo, separada das anteriores por uma linha `________`. Não existe um doc por semana/mês — é sempre o mesmo doc, com tudo dentro, em ordem cronológica decrescente (mais recente primeiro).
 
 O nome do cliente no arquivo pode não bater 100% com o nome no cabeçalho de um PDF recebido (ex.: "Dra. Alexandra" no PDF vs. "Dra. Alexandra Cariello" no nome do arquivo) — combine pelo nome mais próximo; se houver ambiguidade real entre dois clientes parecidos, confirme com o gestor antes de prosseguir.
+
+### Estrutura do Drive que a skill espera (mostre ao gestor na primeira configuração)
+
+Quando pedir o link da pasta, mostre esta estrutura. Só as duas primeiras pastas são necessárias pra skill funcionar bem; o resto é opcional:
+
+```
+Pasta raiz da sua carteira          <- o link que o gestor passa
+|-- Token do Meta Ads.pdf           (recomendado: ver seção do token acima)
+|-- Checkin semanal/
+|   |-- [C2G] Checkin semanal - <Cliente A>     (1 Google Doc por cliente)
+|   |-- [C2G] Checkin semanal - <Cliente B>
+|   `-- Inativos/                               (clientes que saíram)
+|-- Relatório mensal/
+|   |-- [C2G] Relatório mensal - <Cliente A>
+|   `-- Inativos/
+|-- Entrada de relatórios/          (opcional: PDFs da semana pra processar em lote)
+`-- Dados de campanhas/             (opcional)
+    `-- Google Ads/                 (planilha por campanha, ver seção da planilha)
+```
+
+Como montar e manter os Docs (explique ao gestor):
+- **Um Google Doc por cliente, por tipo** (semanal e mensal), com o nome no padrão `[C2G] Checkin semanal - <Cliente>` e `[C2G] Relatório mensal - <Cliente>`. O nome do cliente pode ser o que o gestor usa no dia a dia; a skill combina pelo nome mais próximo.
+- **Dentro de cada Doc, o histórico inteiro do cliente, mais recente no topo.** Cada entrada é o texto exato que foi enviado ao cliente naquela semana/mês, e as entradas ficam separadas por uma linha de sublinhados (`________________`). É essa linha que a skill usa pra separar uma entrada da outra, então mantenha o separador.
+- **Depois de aprovar um check-in, cole o texto final no topo do Doc do cliente.** É isso que dá continuidade e o tom certo aos próximos rascunhos.
+- **Se o gestor está começando agora e não tem histórico**, crie os Docs vazios com o nome padrão. A skill funciona sem histórico, só sem a continuidade e sem o tom daquele cliente, e melhora a cada semana conforme o Doc enche. Se ele tiver check-ins antigos (em outro lugar, no WhatsApp, num documento), colar os 2 ou 3 últimos de cada cliente (e o último relatório mensal) já ajuda bastante.
+- **Permissão de leitura:** o jeito mais rápido de a skill ler os Docs (ver "Como ler o conteúdo desses docs" abaixo) exige que o Doc esteja compartilhado como "qualquer pessoa com o link pode ver", o que deixa o texto acessível a quem tiver o link. Explique essa troca ao gestor. Se ele preferir manter privado, a skill pode ler pelo navegador logado na conta dele, ou ele cola o histórico no chat.
 
 ### Como ler o conteúdo desses docs
 
